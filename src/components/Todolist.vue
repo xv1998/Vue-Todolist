@@ -1,7 +1,11 @@
 <template>
   <div id="todoList">
     <h1>Todo List</h1>
-    <todo-add v-on:add="addTodo"></todo-add>
+    <div class="addList">
+      <router-link v-bind:to="'/TodoAdd'">
+        <button>添加计划</button>
+      </router-link>
+    </div>
     <ul class="todos">
       <li v-for="(todo, index) in todos" :key="todo.num" class="todo" v-if="!todo.isCompleted">
         <input
@@ -45,15 +49,13 @@
   </div>
 </template>
 <script>
-import TodoAdd from './TodoAdd.vue'
+
 let nextTodoId = 0
 export default {
   name: 'TodoList',
-  components: {
-    TodoAdd
-  },
   data: () => ({
     isHide: true,
+    add: '',
     todos: [{
       text: '吃饭',
       num: nextTodoId++,
@@ -68,9 +70,9 @@ export default {
     completed (index) {
       this.todos[index].isCompleted = !this.todos[index].isCompleted
     },
-    addTodo (todo) {
+    addTodo () {
       this.todos.push({
-        text: todo,
+        text: this.add,
         num: nextTodoId++,
         isCompleted: false
       })
@@ -80,6 +82,18 @@ export default {
     },
     finished () {
       this.isHide = !this.isHide
+    }
+  },
+  created () {
+    // eslint-disable-next-line
+    var add = this.$route.params.info;
+    if (add) {
+      this.add = add
+      this.todos.push({
+        text: this.add,
+        num: nextTodoId++,
+        isCompleted: false
+      })
     }
   },
   computed: {
@@ -124,5 +138,9 @@ export default {
 }
 .show{
   display: block;
+}
+.addList{
+  margin-top: 10px;
+  text-align: center;
 }
 </style>

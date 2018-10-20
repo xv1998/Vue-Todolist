@@ -12,14 +12,19 @@
 </template>
 <script>
 export default {
-  name: 'addTodo',
+  name: 'TodoAdd',
   data: () => ({
     todo: ''
   }),
   methods: {
     addTodo () {
       if (this.todo) {
-        this.$emit('add', this.todo)
+        this.$router.push({
+          name: 'Todolist',
+          params: {
+            'info': this.todo
+          }
+        })
         this.todo = ''
       } else {
         alert('内容不能为空')
